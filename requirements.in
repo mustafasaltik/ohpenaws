@@ -4,3 +4,4 @@ pyarrow
 moto
 pytest
 coverage
+pre-commit
