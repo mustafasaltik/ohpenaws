@@ -2,7 +2,6 @@ import boto3
 import pandas as pd
 import pyarrow as pa
 import pyarrow.parquet as pq
-from datetime import datetime
 import os
 import sys
 import shutil
@@ -42,7 +41,9 @@ def validate_data(df):
             raise ValueError("Dataset contains invalid currency codes.")
 
         # Ensure TransactionTimestamp is in datetime format
-        df["TransactionTimestamp"] = pd.to_datetime(df["TransactionTimestamp"], errors="coerce")
+        df["TransactionTimestamp"] = pd.to_datetime(
+            df["TransactionTimestamp"], errors="coerce"
+        )
         if df["TransactionTimestamp"].isnull().any():
             raise ValueError("Dataset contains invalid timestamps.")
 
@@ -76,9 +77,10 @@ def write_parquet_to_s3(df, bucket, prefix):
             for file in files:
                 if file.endswith(".parquet"):
                     local_path = os.path.join(root, file)
-                    s3_key = os.path.join(prefix, os.path.relpath(local_path, output_dir))
+                    s3_key = os.path.join(
+                        prefix, os.path.relpath(local_path, output_dir)
+                    )
                     s3_client.upload_file(local_path, bucket, s3_key)
-
 
         # Clean up local files
         shutil.rmtree(output_dir)

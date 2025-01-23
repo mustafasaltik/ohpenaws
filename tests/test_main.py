@@ -1,20 +1,17 @@
 import unittest
-from unittest.mock import patch, MagicMock
+from unittest.mock import patch
 import pandas as pd
 import boto3
 import io
 from moto import mock_aws
-import os
 
 # Import functions from the script
 from main import read_csv_from_s3, validate_data, write_parquet_to_s3
 
 
 class TestS3ValidationScript(unittest.TestCase):
-
     @mock_aws
     def setUp(self):
-
         # Sample CSV data
         self.csv_data = """TransactionID,CustomerID,TransactionAmount,Currency,TransactionTimestamp
             1,123,100.50,USD,2024-01-15 10:30:00
@@ -40,7 +37,13 @@ class TestS3ValidationScript(unittest.TestCase):
         # Test the function
         df = read_csv_from_s3(bucket_name, key)
         assert not df.empty
-        assert df.columns.tolist() == ["TransactionID", "CustomerID", "TransactionAmount", "Currency", "TransactionTimestamp"]
+        assert df.columns.tolist() == [
+            "TransactionID",
+            "CustomerID",
+            "TransactionAmount",
+            "Currency",
+            "TransactionTimestamp",
+        ]
 
     def test_validate_data(self):
         """Test data validation."""
@@ -97,6 +100,7 @@ class TestS3ValidationScript(unittest.TestCase):
         df = pd.read_csv(io.StringIO(invalid_data))
         with self.assertRaises(ValueError):
             validate_data(df)
+
 
 if __name__ == "__main__":
     unittest.main()
