@@ -92,8 +92,9 @@ And it'll be available to investigate which parts have been covered by unit test
 ## Next Steps
 
 - Set Up Monitoring and Alerting
-- Separate staging and transformation layer 
+- Implement dynamic schema evolution to handle changes in transaction data.
+- Introduce retry mechanisms for transient S3 failures.
 - Data modelling (fact and dimension)
-- Automated data quality checks and integrate with alert system if there is any DQ problem
+- Expand data quality checks and automate with alerting system if there is any DQ problem
 - Exception handling can be improved with using more detailed error messages using custom exceptions
 - Incremental logic should be applied for both extraction and transformation layer (to not process entire data on every run)
